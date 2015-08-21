@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SlackMusicNotifier.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+        [[[SlackMusicNotifier alloc] init] start];
     }
     return 0;
 }

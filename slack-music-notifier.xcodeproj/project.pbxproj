@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		83AA858A1B7AE63B00B63E67 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AA85891B7AE63B00B63E67 /* main.m */; };
+		83AA85921B7AE66000B63E67 /* SlackMusicNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AA85911B7AE66000B63E67 /* SlackMusicNotifier.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,11 @@
 /* Begin PBXFileReference section */
 		83AA85861B7AE63B00B63E67 /* slack-music-notifier */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "slack-music-notifier"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83AA85891B7AE63B00B63E67 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		83AA85901B7AE66000B63E67 /* SlackMusicNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlackMusicNotifier.h; sourceTree = "<group>"; };
+		83AA85911B7AE66000B63E67 /* SlackMusicNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlackMusicNotifier.m; sourceTree = "<group>"; };
+		83AA85931B7AE68600B63E67 /* iTunes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		83AA85941B7AE68600B63E67 /* Rdio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rdio.h; sourceTree = "<group>"; };
+		83AA85951B7AE9D100B63E67 /* Spotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +63,12 @@
 		83AA85881B7AE63B00B63E67 /* slack-music-notifier */ = {
 			isa = PBXGroup;
 			children = (
+				83AA85931B7AE68600B63E67 /* iTunes.h */,
+				83AA85951B7AE9D100B63E67 /* Spotify.h */,
+				83AA85941B7AE68600B63E67 /* Rdio.h */,
 				83AA85891B7AE63B00B63E67 /* main.m */,
+				83AA85901B7AE66000B63E67 /* SlackMusicNotifier.h */,
+				83AA85911B7AE66000B63E67 /* SlackMusicNotifier.m */,
 			);
 			path = "slack-music-notifier";
 			sourceTree = "<group>";
@@ -118,6 +129,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83AA85921B7AE66000B63E67 /* SlackMusicNotifier.m in Sources */,
 				83AA858A1B7AE63B00B63E67 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
