@@ -38,13 +38,19 @@
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"com.rdio.desktop.playStateChanged" object:nil];
 }
 
-- (void)post:(NSString *)text {
+- (void)post:(NSString *)text iconURL:(NSURL *)iconURL{
     [self log:text];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.args[@"--webhook-url"]]];
     request.HTTPMethod = @"POST";
     
-    NSString *body = [NSString stringWithFormat:@"payload={\"username\": \"%@\", \"text\": \"%@\"}", self.args[@"--name"], text];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    params[@"username"] = self.args[@"--name"];
+    params[@"text"] = text;
+    params[@"icon_url"] = [iconURL absoluteString];
+
+    NSData *json = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
+    NSString *body = [NSString stringWithFormat:@"payload=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
     request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -61,19 +67,25 @@
 
 - (void)iTunesDidUpdate:(NSNotification *)notification {
     if(self.iTunes.playerState == iTunesEPlSPlaying) {
-        [self post:[NSString stringWithFormat:@"%@ - %@", self.iTunes.currentTrack.artist, self.iTunes.currentTrack.name]];
+        NSString *text = [NSString stringWithFormat:@"%@ - %@", self.iTunes.currentTrack.artist, self.iTunes.currentTrack.name];
+        NSURL *iconURL = [NSURL URLWithString:@"https://raw.githubusercontent.com/chrisellsworth/slack-music-notifier/master/icons/iTunes.png"];
+        [self post:text iconURL:iconURL];
     }
 }
 
 - (void)spotifyDidUpdate:(NSNotification *)notification {
     if(self.spotify.playerState == SpotifyEPlSPlaying) {
-        [self post:[NSString stringWithFormat:@"%@ - %@", self.spotify.currentTrack.artist, self.spotify.currentTrack.name]];
+        NSString *text = [NSString stringWithFormat:@"%@ - %@", self.spotify.currentTrack.artist, self.spotify.currentTrack.name];
+        NSURL *iconURL = [NSURL URLWithString:@"https://raw.githubusercontent.com/chrisellsworth/slack-music-notifier/master/icons/Spotify.png"];
+        [self post:text iconURL:iconURL];
     }
 }
 
 - (void)rdioDidUpdate:(NSNotification *)notification {
     if(self.rdio.playerState == RdioEPSSPlaying) {
-        [self post:[NSString stringWithFormat:@"%@ - %@", self.rdio.currentTrack.artist, self.rdio.currentTrack.name]];
+        NSString *text = [NSString stringWithFormat:@"%@ - %@", self.rdio.currentTrack.artist, self.rdio.currentTrack.name];
+        NSURL *iconURL = [NSURL URLWithString:@"https://raw.githubusercontent.com/chrisellsworth/slack-music-notifier/master/icons/Rdio.png"];
+        [self post:text iconURL:iconURL];
     }
 }
 
