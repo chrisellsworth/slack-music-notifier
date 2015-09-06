@@ -16,6 +16,7 @@
 @property (nonatomic, strong) SpotifyApplication *spotify;
 @property (nonatomic, strong) RdioApplication *rdio;
 @property (nonatomic, strong) NSDictionary *args;
+@property (nonatomic, strong) NSDictionary *lastParams;
 @end
 
 @implementation SlackMusicNotifier
@@ -48,21 +49,25 @@
     params[@"username"] = self.args[@"--name"];
     params[@"text"] = text;
     params[@"icon_url"] = [iconURL absoluteString];
-
-    NSData *json = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
-    NSString *body = [NSString stringWithFormat:@"payload=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-    request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     
-    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if(error != nil) {
-            [self log:[NSString stringWithFormat:@"Error: %@", error]];
-            return;
-        }
+    if(![params isEqual:self.lastParams]) {
+        self.lastParams = params;
+
+        NSData *json = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
+        NSString *body = [NSString stringWithFormat:@"payload=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+        request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSString *responseBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        [self log:[NSString stringWithFormat:@"Response: %@", responseBody]];
-    }];
-    [task resume];
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error != nil) {
+                [self log:[NSString stringWithFormat:@"Error: %@", error]];
+                return;
+            }
+
+            NSString *responseBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            [self log:[NSString stringWithFormat:@"Response: %@", responseBody]];
+        }];
+        [task resume];
+    }
 }
 
 - (void)iTunesDidUpdate:(NSNotification *)notification {
